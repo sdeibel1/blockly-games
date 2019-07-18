@@ -48,9 +48,9 @@
  */
 {template .start}
   {call .messages /}
-  <table width="100%">
+  <table style="width: 100%; table-layout: fixed;">
     <tr>
-      <td>
+      <td width="40%">
         <h1>
           {call BlocklyGames.soy.titleSpan}
             {param appName}
@@ -65,7 +65,7 @@
           {/call}
         </h1>
       </td>
-      <td class="farSide">
+      <td class="farSide" style="padding-right: 10px">
         <select id="languageMenu"></select>
         &nbsp;
         <button id="linkButton" title="{msg meaning="Games.linkTooltip" desc="IBID"}Save and link to blocks.{/msg}">
@@ -74,7 +74,7 @@
         &nbsp;
         <button id="helpButton">
           {{msg meaning="Games.help" desc="IBID"}}Help{{/msg}}
-        </button>
+        </button>     
       </td>
     </tr>
   </table>
@@ -82,7 +82,7 @@
   <div id="staveBox"></div>
   <div id="musicBox">
     <div id="musicContainer"></div>
-  </div>
+  </div>  
   <table style="padding-top: 1em;">
     <tr>
       <td style="width: 190px; text-align: center; vertical-align: top;">
@@ -121,6 +121,7 @@
       </td>
     </tr>
   </table>
+
   {if $ij.level == 10 and not $ij.html}
   <table style="padding-top: 1em; width: 400px;">
     <tr>
@@ -167,7 +168,12 @@
   {/if}
 
   {call .toolbox /}
+  <div id="nav">
+    <p id='parentNav'></p>
+    <ul id='mainNavList'></ul>
+  </div>
   <div id="blockly"></div>
+
 
   {call BlocklyGames.soy.dialog /}
   {call BlocklyGames.soy.doneDialog /}
@@ -189,6 +195,7 @@
     </div>
     {call BlocklyGames.soy.ok /}
   </div>
+
 
   <div id="help" class="dialogHiddenContent">
     <div style="padding-bottom: 0.7ex">

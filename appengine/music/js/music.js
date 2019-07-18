@@ -31,6 +31,7 @@ goog.require('BlocklyInterface');
 goog.require('Music.Blocks');
 goog.require('Music.soy');
 goog.require('Slider');
+goog.require('Blockly.Linearization');
 
 goog.require('goog.array');
 goog.require('goog.dom');
@@ -122,13 +123,19 @@ Music.init = function() {
   var paddingBox = document.getElementById('paddingBox');
   var staveBox = document.getElementById('staveBox');
   var musicBox = document.getElementById('musicBox');
+  var nav = document.getElementById('nav');
   var onresize = function(e) {
+    paddingBox.style.height = 100 + 'px';
+    musicBox.style.height = 100 + 'px';
+    staveBox.style.height = 100 + 'px';
     var top = paddingBox.offsetTop;
     staveBox.style.top = top + 'px';
     musicBox.style.top = top + 'px';
     blocklyDiv.style.top = Math.max(10, top - window.pageYOffset) + 'px';
     blocklyDiv.style.left = rtl ? '10px' : '420px';
-    blocklyDiv.style.width = (window.innerWidth - 440) + 'px';
+    blocklyDiv.style.width = (window.innerWidth - 740) + 'px';
+
+    nav.style.left = (420 + window.innerWidth - 740 + 20) + 'px';
   };
   window.addEventListener('scroll', function() {
       onresize(null);
@@ -155,6 +162,13 @@ Music.init = function() {
   Blockly.JavaScript.addReservedWords('play,rest,setInstrument,' +
       'start0,start1,start2,start3,start4,start5,start6,start7,start8,start9');
   // Only start1-4 are used, but no harm in being safe.
+  
+  // LINEARIZATION
+  BlocklyGames.workspace.linearization = new Blockly.Linearization(
+    BlocklyGames.workspace,
+    document.getElementById('parentNav'),
+    document.getElementById('mainNavList')
+  );
 
   if (document.getElementById('submitButton')) {
     BlocklyGames.bindClick('submitButton', Music.submitToGallery);
@@ -249,7 +263,7 @@ Music.drawStave = function(n) {
 Music.staveTop_ = function(i, n) {
   var staveHeight = 69;
   var boxHeight = 400 - 15;  // Subtract the scrollbar.
-  var top = (2 * i - 1) / (2 * n) * boxHeight;
+  var top = (i - 1) / (2 * n) * boxHeight + 40;
   top -= staveHeight / 2;  // Center the stave on the desired spot.
   top += 5;  // Notes stick up a bit.
   return top;
@@ -397,7 +411,7 @@ Music.drawAnswer = function() {
       for (var j = 0; j < chanel.length; j += 2) {
         var pitch = String(chanel[j]);
         var duration = chanel[j + 1];
-        Music.drawNote(i + 1, time, pitch, duration, 'goal');
+        Music.drawNote(i+1, time, pitch, duration, 'goal');
         time += duration;
       }
     }
