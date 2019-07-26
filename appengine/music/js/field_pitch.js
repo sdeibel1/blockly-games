@@ -162,6 +162,9 @@ Blockly.FieldPitch.prototype.setValue = function(newValue) {
   if (note === undefined) {
     throw 'Invalid note value: ' + newValue;
   }
+  // if (note !== undefined) {
+  //   this.setText(note);
+  // }
   this.setText(note);
 };
 

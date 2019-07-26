@@ -124,16 +124,26 @@ Music.init = function() {
   var staveBox = document.getElementById('staveBox');
   var musicBox = document.getElementById('musicBox');
   var nav = document.getElementById('nav');
+  var height = 0;
+
+  if (BlocklyGames.LEVEL > 8) { 
+    height = 400;
+  } else if (BlocklyGames.LEVEL > 6) {
+    height = 200;
+  } else {
+    height = 100;
+  }
   var onresize = function(e) {
-    paddingBox.style.height = 100 + 'px';
-    musicBox.style.height = 100 + 'px';
-    staveBox.style.height = 100 + 'px';
     var top = paddingBox.offsetTop;
+    paddingBox.style.height = height + 'px';
     staveBox.style.top = top + 'px';
+    staveBox.style.height = height + 'px';
     musicBox.style.top = top + 'px';
+    musicBox.style.height = height + 'px';
+
     blocklyDiv.style.top = Math.max(10, top - window.pageYOffset) + 'px';
     blocklyDiv.style.left = rtl ? '10px' : '420px';
-    blocklyDiv.style.width = (window.innerWidth - 740) + 'px';
+    blocklyDiv.style.width = (window.innerWidth - 440) + 'px';
 
     nav.style.left = (420 + window.innerWidth - 740 + 20) + 'px';
   };
@@ -164,11 +174,12 @@ Music.init = function() {
   // Only start1-4 are used, but no harm in being safe.
   
   // LINEARIZATION
+  var mainNavList = document.getElementById('mainNavList');
+  var parentNav = document.getElementById('parentNav');
   BlocklyGames.workspace.linearization = new Blockly.Linearization(
-    BlocklyGames.workspace,
-    document.getElementById('parentNav'),
-    document.getElementById('mainNavList')
-  );
+    BlocklyGames.workspace, parentNav, mainNavList);
+
+  BlocklyGames.workspace.linearization.setFontSize(24);
 
   if (document.getElementById('submitButton')) {
     BlocklyGames.bindClick('submitButton', Music.submitToGallery);
@@ -263,7 +274,11 @@ Music.drawStave = function(n) {
 Music.staveTop_ = function(i, n) {
   var staveHeight = 69;
   var boxHeight = 400 - 15;  // Subtract the scrollbar.
-  var top = (i - 1) / (2 * n) * boxHeight + 40;
+  if (BlocklyGames.LEVEL > 8) {
+    var top = (2 * i - 1) / (2 * n) * boxHeight;
+  } else {
+    var top = (i - 1) / (2 * n) * boxHeight + 40;
+  }
   top -= staveHeight / 2;  // Center the stave on the desired spot.
   top += 5;  // Notes stick up a bit.
   return top;
